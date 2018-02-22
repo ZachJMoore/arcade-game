@@ -84,9 +84,9 @@ Player.prototype.handleInput = function (key) {
             break;
     }
 }
-let enemyOne = new Enemy(2, 0, enemyPositions[0]);
-let enemyTwo = new Enemy(4, 0, enemyPositions[1]);
-let enemyThree = new Enemy(6, 0, enemyPositions[2]);
+let enemyOne = new Enemy(1, 0, enemyPositions[0]);
+let enemyTwo = new Enemy(2, 0, enemyPositions[1]);
+let enemyThree = new Enemy(4, 0, enemyPositions[2]);
 
 let thePlayer = new Player();
 
