@@ -1,6 +1,20 @@
-frontend-nanodegree-arcade-game
-===============================
+Bug Trouble
+===========
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+In this game, users must avoid getting hit by bugs while crossing the road in order to earn points. Everytime gets faster so watch out!
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+Usage
+-----
+
+To play this game all you need to do is clone this repository to your system using:
+```sh
+git clone https://github.com/ZachJMoore/arcade-game.git
+```
+Then from there, open index.html into your browser of choice. Preferably Google Chrome
+
+How To Play/Game Play
+---------------------
+
+To start you spawn at the bottom of the screen, from here you must use your arrow keys to move forwards, backwards, or side to side in order to avoid the bugs while you try to reach the other side.
+
+Everytime you get across your points go up by 10 and the enemies speed up for you to do it over again. You have three lives to see how many times you can get across.
