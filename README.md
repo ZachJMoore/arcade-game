@@ -7,7 +7,7 @@ Usage
 -----
 
 To play this game all you need to do is clone this repository to your system using:
-```sh
+```bash
 git clone https://github.com/ZachJMoore/arcade-game.git
 ```
 Then from there, open index.html into your browser of choice. Preferably Google Chrome
