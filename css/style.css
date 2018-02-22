@@ -1,0 +1,24 @@
+body {
+    background: linear-gradient(145deg, #0d66f4 0%, #27d141 100%);
+    color: white;
+    background-repeat: no-repeat;
+    height: 95vh;
+    font-family: "Montserrat";
+    text-align: center;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+.dashboard{
+    margin: 50px;
+    display: flex;
+    justify-content: space-around;
+    width: 505px;
+    align-items: center;
+}
+canvas{
+    padding: 0 15px;
+    border: 2px solid white;
+    border-radius: 25px;
+}
