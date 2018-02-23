@@ -54,11 +54,11 @@ let Player = function (x = 202, y = 404) {
     this.y = y;
 }
 
-Player.prototype.score = function (player) {
+Player.prototype.score = function (playerObject) {
     console.log("reached end")
     setTimeout(function () {
-        player.y = 404;
-        player.x = 202;
+        playerObject.y = 404;
+        playerObject.x = 202;
         score += 10;
         updateScore();
     }, 350)
@@ -89,10 +89,10 @@ Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 Player.prototype.handleInput = function (key) {
-    let checkEnd = function (player) {
+    let checkEnd = function (playerObject) {
         //checks if the player has reached the end and increases the points. the setTimeout() also provides visual aid that the player made it to the end before resetting their position
-        if (player.y === -11) {
-            player.score(player);
+        if (playerObject.y === -11) {
+            playerObject.score(player);
         }
     }
     //handles whether or not an arrow key will take the player out of the canvas, and if it does, then break. otherwise move the player.
