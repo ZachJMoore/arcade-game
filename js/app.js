@@ -10,6 +10,7 @@ let highscore;
 let score = 0
 let highscoreStorage = window.localStorage;
 
+//check whether there is a highscore already and if it needs to be set or updated
 if (highscoreStorage.getItem("highscore") === null) {
     highscore = score;
     highscoreStorage.setItem("highscore", highscore);
@@ -25,7 +26,9 @@ var Enemy = function (speed = 1, x = 0, y = 65) {
     this.sprite = "images/enemy-bug.png";
 };
 Enemy.prototype.update = function (dt) {
-    this.x = (this.x + score / 15) + (dt * this.speed); //sets the speed equal to the value input when a new object is created, plus increases everytime a player scores
+
+    //sets the speed equal to the value input when a new object is created, plus increases everytime a player scores
+    this.x = (this.x + score / 15) + (dt * this.speed);
 
     //checks whether the bug is out of view, then resets to the other side if true.
     if (this.x > 600) {
@@ -54,8 +57,10 @@ let Player = function (x = 202, y = 404) {
     this.y = y;
 }
 
+//add up score, Player function
 Player.prototype.score = function (playerObject) {
     console.log("reached end")
+    // the setTimeout() provides visual aid that the player made it to the end before resetting their position
     setTimeout(function () {
         playerObject.y = 404;
         playerObject.x = 202;
@@ -89,13 +94,13 @@ Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 Player.prototype.handleInput = function (key) {
+    //check if the player has reached the end. Call it down below whenever a move is made
     let checkEnd = function (playerObject) {
-        //checks if the player has reached the end and increases the points. the setTimeout() also provides visual aid that the player made it to the end before resetting their position
         if (playerObject.y === -11) {
-            playerObject.score(player);
+            playerObject.score(playerObject);
         }
     }
-    //handles whether or not an arrow key will take the player out of the canvas, and if it does, then break. otherwise move the player.
+    //handles whether or not an arrow key will take the player out of the canvas, and if it does, then break. otherwise move the player and check for a win.
     switch (key) {
         case "left":
             if ((this.x - 101) < 0) {
@@ -128,7 +133,7 @@ Player.prototype.handleInput = function (key) {
     }
 
 }
-
+//initalize player
 let thePlayer = new Player();
 let player = thePlayer
 
@@ -145,6 +150,7 @@ document.addEventListener('keyup', function (e) {
 
 function updateScore() {
     scoreText.textContent = score;
+    //update highscore if it is less than the new score
     if (parseInt(highscoreStorage.getItem("highscore")) < score) {
         highscore = score;
         highscoreStorage.setItem("highscore", highscore);
