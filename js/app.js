@@ -1,16 +1,31 @@
+"use strict";
+
 //set score and lives html elements
-const score = document.querySelector("#score");
+const scoreText = document.querySelector("#score");
+const highscoreText = document.querySelector("#highscore");
 const lives = document.querySelector("#lives");
 const enemyPositions = [72, 155, 238]; //the only three available places for a bug to be
 lives.textContent = 3;
+let highscore;
+let score = 0
+let highscoreStorage = window.localStorage;
+
+if (highscoreStorage.getItem("highscore") === null) {
+    highscore = score;
+    highscoreStorage.setItem("highscore", highscore);
+} else {
+    highscore = parseInt(highscoreStorage.getItem("highscore"));
+    highscoreText.textContent = highscore;
+}
+
 var Enemy = function (speed = 1, x = 0, y = 65) {
     this.x = x;
     this.y = y;
     this.speed = speed
     this.sprite = "images/enemy-bug.png";
 };
-Enemy.prototype.update = function () {
-    this.x += this.speed + (score.textContent / 20)//sets the speed equal to the value input when a new object is created, plus increases everytime a player scores
+Enemy.prototype.update = function (dt) {
+    this.x = (this.x + score / 15) + (dt * this.speed); //sets the speed equal to the value input when a new object is created, plus increases everytime a player scores
 
     //checks whether the bug is out of view, then resets to the other side if true.
     if (this.x > 600) {
@@ -27,46 +42,59 @@ Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//make all objects and add them to the arrays
+let enemyOne = new Enemy(60, 0, enemyPositions[0]);
+let enemyTwo = new Enemy(90, 0, enemyPositions[1]);
+let enemyThree = new Enemy(120, 0, enemyPositions[2]);
+let allEnemies = [enemyOne, enemyTwo, enemyThree];
+
 let Player = function (x = 202, y = 404) {
     this.sprite = "images/char-boy.png";
     this.x = x;
     this.y = y;
 }
 
+Player.prototype.score = function (player) {
+    console.log("reached end")
+    setTimeout(function () {
+        player.y = 404;
+        player.x = 202;
+        score += 10;
+        updateScore();
+    }, 350)
+}
+
 Player.prototype.update = function () {
     //checks or collision and decreases a life if so.
-    if ((this.y === enemyOne.y) && (this.x - 50 <= enemyOne.x) && (this.x + 50 >= enemyOne.x) ||
-        (this.y === enemyTwo.y) && (this.x - 50 <= enemyTwo.x && this.x + 50 >= enemyTwo.x) ||
-        (this.y === enemyThree.y) && (this.x - 50 <= enemyThree.x && this.x + 50 >= enemyThree.x)) {
-        console.log("collision")
-        this.y = 404;
-        this.x = 202;
-        lives.textContent--;
+    for (let i = 0; i <= 2; i++) {
+        if ((this.y === allEnemies[i].y) && (this.x - 50 <= allEnemies[i].x) && (this.x + 50 >= allEnemies[i].x)) {
+            console.log("collision")
+            this.y = 404;
+            this.x = 202;
+            lives.textContent--;
+        }
     }
     //checks for lives left, if none, display an alert which effectively pauses the game, while returning the player score.
     if (lives.textContent == 0) {
         console.log("you lost")
         this.y = 404;
         this.x = 202;
-        alert(`Game Over! You were getting so far. You got a score of ${score.textContent}`);
+        alert(`Game Over! You were getting so far. You got a score of ${score}`);
         lives.textContent = 3;
-        score.textContent = 0;
-    }
-    //checks if the player has reached the end and increases the points by about 10 each time. the setTimeout() also provides visual aid that the player made it to the end before resetting their position
-    if (thePlayer.y === -11) {
-        console.log("reached end")
-        setTimeout(function () {
-            thePlayer.y = 404;
-            thePlayer.x = 202;
-            score.textContent++
-        }, 150)
-
+        score = 0;
+        updateScore();
     }
 }
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 Player.prototype.handleInput = function (key) {
+    let checkEnd = function (player) {
+        //checks if the player has reached the end and increases the points. the setTimeout() also provides visual aid that the player made it to the end before resetting their position
+        if (player.y === -11) {
+            player.score(player);
+        }
+    }
     //handles whether or not an arrow key will take the player out of the canvas, and if it does, then break. otherwise move the player.
     switch (key) {
         case "left":
@@ -74,33 +102,34 @@ Player.prototype.handleInput = function (key) {
                 break;
             }
             this.x += -101;
+            checkEnd(this);
             break;
         case "up":
             if ((this.y - 83) < -50) {
                 break
             }
             this.y += -83;
+            checkEnd(this);
             break;
         case "right":
             if ((this.x + 101) > 500) {
                 break
             }
             this.x += 101;
+            checkEnd(this);
             break;
         case "down":
             if ((this.y + 83) > 450) {
                 break
             }
             this.y += 83;
+            checkEnd(this);
             break;
     }
+
 }
-//make all objects and add them to the arrays
-let enemyOne = new Enemy(1, 0, enemyPositions[0]);
-let enemyTwo = new Enemy(2, 0, enemyPositions[1]);
-let enemyThree = new Enemy(4, 0, enemyPositions[2]);
+
 let thePlayer = new Player();
-let allEnemies = [enemyOne, enemyTwo, enemyThree];
 let player = thePlayer
 
 document.addEventListener('keyup', function (e) {
@@ -113,3 +142,12 @@ document.addEventListener('keyup', function (e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+function updateScore() {
+    scoreText.textContent = score;
+    if (parseInt(highscoreStorage.getItem("highscore")) < score) {
+        highscore = score;
+        highscoreStorage.setItem("highscore", highscore);
+    }
+    highscoreText.textContent = highscore
+}
