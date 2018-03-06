@@ -18,3 +18,5 @@ How To Play/Game Play
 To start you spawn at the bottom of the screen, from here you must use your arrow keys to move forwards, backwards, or side to side in order to avoid the bugs while you try to reach the other side.
 
 Everytime you get across your points go up by 10 and the enemies speed up for you to do it over again. You have three lives to see how many times you can get across.
+
+Try it out here: https://zachjmoore.github.io/arcade-game/
